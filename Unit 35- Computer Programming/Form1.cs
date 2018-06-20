@@ -17,8 +17,8 @@ namespace Unit_35__Computer_Programming
         class row
         {
             public double time;
-            public double velocity;
             public double altitude;
+            public double velocity;
             public double acceleration;
 
         
@@ -69,7 +69,7 @@ namespace Unit_35__Computer_Programming
                             table.Add(new row());
                             string[] r = sr.ReadLine().Split(',');
                             table.Last().time = double.Parse(r[0]);
-                            table.Last().velocity = double.Parse(r[1]);
+                            table.Last().altitude = double.Parse(r[1]);
                         }
                     }
                     calculateVelocity();
@@ -103,7 +103,7 @@ namespace Unit_35__Computer_Programming
         {
             chart1.Series.Clear();
             chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            Series series = new series
+            Series series = new Series
             {
                 Name = "Velocity",
                 Color = Color.Coral,
@@ -117,9 +117,81 @@ namespace Unit_35__Computer_Programming
             {
                 series.Points.AddXY(r.time, r.acceleration);
             }
-            chart1.ChartAreas[0].AxisXTitle = "Acceleration /ms^-2";
-            chart1.ChartAreas[0].AxisYTitle = "Velocicty /ms^-1";
+            chart1.ChartAreas[0].AxisXTitle = "time /s";
+            chart1.ChartAreas[0].AxisYTitle = "acceleration /ms^-2";
             chart1.ChartAreas[0].RecalculateAxesScale();
+        }
+
+        private void altitudeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart1.Series.Clear();
+            chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
+            Series series = new Series
+            {
+                Name = "Altitude",
+                Color = Color.PaleGreen,
+                IsVisibleInLegend = false,
+                IsXValueIndexed = true,
+                ChartType = SeriesChartType.Spline,
+                BorderWidth = 2
+            };
+            chart1.Series.Add(series);
+            foreach (row r in table.Skip(1))
+            {
+                series.Points.AddXY(r.dt, r.dalt);
+            }
+            chart1.ChartAreas[0].AxisXTitle = "time /s";
+            chart1.ChartAreas[0].AxisYTitle = "altitude /m";
+            chart1.ChartAreas[0].RecalculateAxesScale();
+        }
+
+        private void accelerationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart1.Series.Clear();
+            chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
+            Series series = new series
+            {
+                Name = "Acceleration",
+                Color = Color.Purple,
+                IsVisibleInLegend = false,
+                IsXValueIndexed = true,
+                ChartType = SeriesChartType.Spline,
+                BorderWidth = 2
+            };
+            chart1.Series.Add(series);
+            foreach (row r in table.Skip(1))
+            {
+                series.Points.AddXY(r.dt, r.dv);
+            }
+            chart1.ChartAreas[0].AxisXTitle = "time /s";
+            chart1.ChartAreas[0].AxisYTitle = "velocity /ms^-1";
+            chart1.ChartAreas[0].RecalculateAxesScale();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.Filter = "csv Files|*.csv";
+            DialogResult results = saveFileDialog1.ShowDialog();
+            if (results == DialogResult.OK)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(saveFileDialog1.FileName))
+                    {
+                        sw.WriteLine("Time /s, altitude /m, velocity /ms^-1, acceleration /ms^-2");
+                        foreach (row r in table)
+                        {
+                            sw.WriteLine(r.time + "," + r.altitude + "," + r.velocity + "," + r.acceleration);
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show(saveFileDialog1.FileName + "Failed to save");
+
+                }
+            }
         }
     }
 }
