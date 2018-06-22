@@ -21,7 +21,7 @@ namespace Unit_35__Computer_Programming
             public double velocity;
             public double acceleration;
 
-        
+
         }
 
         List<row> table = new List<row>();
@@ -30,9 +30,9 @@ namespace Unit_35__Computer_Programming
             InitializeComponent();
         }
 
-        private void calculateVelocity()
+        void calculateVelocity()
         {
-            for (int i=1; i > table.Count; i++)
+            for (int i = 1; i < table.Count; i++)
             {
                 double dt = table[i].time - table[i - 1].time;
                 double dalt = table[i].altitude - table[i - 1].altitude;
@@ -40,9 +40,9 @@ namespace Unit_35__Computer_Programming
             }
         }
 
-        private void calculatedAcceleration()
+        void calculatedAcceleration()
         {
-            for (int i = 2; i > table.Count; i++)
+            for (int i = 2; i < table.Count; i++)
             {
                 double dt = table[i].time - table[i - 1].time;
                 double dv = table[i].velocity - table[i - 1].velocity;
@@ -53,6 +53,10 @@ namespace Unit_35__Computer_Programming
 
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "csv files|*.csv";
@@ -92,10 +96,6 @@ namespace Unit_35__Computer_Programming
                     MessageBox.Show(openFileDialog1.FileName + " has rows that has the same time");
                 }
             }
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -113,12 +113,12 @@ namespace Unit_35__Computer_Programming
                 BorderWidth = 2
             };
             chart1.Series.Add(series);
-            foreach(row r in table.Skip(1))
+            foreach (row r in table.Skip(1))
             {
                 series.Points.AddXY(r.time, r.acceleration);
             }
-            chart1.ChartAreas[0].AxisXTitle = "time /s";
-            chart1.ChartAreas[0].AxisYTitle = "acceleration /ms^-2";
+            chart1.ChartAreas[0].AxisX.Title = "time /s";
+            chart1.ChartAreas[0].AxisY.Title = "acceleration /ms^-2";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
 
@@ -138,10 +138,10 @@ namespace Unit_35__Computer_Programming
             chart1.Series.Add(series);
             foreach (row r in table.Skip(1))
             {
-                series.Points.AddXY(r.dt, r.dalt);
+                series.Points.AddXY(r.time, r.altitude);
             }
-            chart1.ChartAreas[0].AxisXTitle = "time /s";
-            chart1.ChartAreas[0].AxisYTitle = "altitude /m";
+            chart1.ChartAreas[0].AxisX.Title = "time /s";
+            chart1.ChartAreas[0].AxisY.Title = "altitude /m";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
 
@@ -149,7 +149,7 @@ namespace Unit_35__Computer_Programming
         {
             chart1.Series.Clear();
             chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            Series series = new series
+            Series series = new Series
             {
                 Name = "Acceleration",
                 Color = Color.Purple,
@@ -161,10 +161,10 @@ namespace Unit_35__Computer_Programming
             chart1.Series.Add(series);
             foreach (row r in table.Skip(1))
             {
-                series.Points.AddXY(r.dt, r.dv);
+                series.Points.AddXY(r.time, r.velocity);
             }
-            chart1.ChartAreas[0].AxisXTitle = "time /s";
-            chart1.ChartAreas[0].AxisYTitle = "velocity /ms^-1";
+            chart1.ChartAreas[0].AxisX.Title = "time /s";
+            chart1.ChartAreas[0].AxisY.Title = "velocity /ms^-1";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
 
@@ -193,5 +193,33 @@ namespace Unit_35__Computer_Programming
                 }
             }
         }
+
+        private void savePNGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.Filter = "png Files|*.png";
+            DialogResult results = saveFileDialog1.ShowDialog();
+            if (results == DialogResult.OK)
+            {
+                try
+                {
+                    chart1.SaveImage(saveFileDialog1.FileName, ChartImageFormat.Png);
+
+                }
+                catch
+                {
+                    MessageBox.Show(saveFileDialog1.FileName + "Failed to save");
+
+                }
+            }
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+
+
+
