@@ -14,6 +14,7 @@ namespace Unit_35__Computer_Programming
 {
     public partial class Form1 : Form
     {
+
         class row
         {
             public double time;
@@ -25,6 +26,7 @@ namespace Unit_35__Computer_Programming
         }
 
         List<row> table = new List<row>();
+        //here i have defined the key variables for my program
         public Form1()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace Unit_35__Computer_Programming
                 table[i].velocity = dalt / dt;
             }
         }
-
+        //here is where velocity is calculated from the data, using the derivative of altitude and time.
         void calculatedAcceleration()
         {
             for (int i = 2; i < table.Count; i++)
@@ -49,7 +51,7 @@ namespace Unit_35__Computer_Programming
                 table[i].acceleration = dv / dt;
             }
         }
-
+        //here is where acceleration is calculated from the data, using the derivative of velocity and time.
 
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -76,6 +78,7 @@ namespace Unit_35__Computer_Programming
                             table.Last().altitude = double.Parse(r[1]);
                         }
                     }
+                    //this is where my program opens a csv file to retreive the data
                     calculateVelocity();
                     calculatedAcceleration();
                 }
@@ -98,7 +101,7 @@ namespace Unit_35__Computer_Programming
             }
 
         }
-
+        //this is where my program will display an error if something unexpected is entered
         private void velocityToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart1.Series.Clear();
@@ -121,7 +124,7 @@ namespace Unit_35__Computer_Programming
             chart1.ChartAreas[0].AxisY.Title = "acceleration /ms^-2";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
-
+        //this is the graph for velocity
         private void altitudeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart1.Series.Clear();
@@ -144,7 +147,7 @@ namespace Unit_35__Computer_Programming
             chart1.ChartAreas[0].AxisY.Title = "altitude /m";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
-
+        //this is the graph for altitude
         private void accelerationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart1.Series.Clear();
@@ -167,7 +170,7 @@ namespace Unit_35__Computer_Programming
             chart1.ChartAreas[0].AxisY.Title = "velocity /ms^-1";
             chart1.ChartAreas[0].RecalculateAxesScale();
         }
-
+        //the graph for acceleration
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.FileName = "";
@@ -193,7 +196,7 @@ namespace Unit_35__Computer_Programming
                 }
             }
         }
-
+        //here is where the program can save a CSV file
         private void savePNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.FileName = "";
@@ -213,7 +216,7 @@ namespace Unit_35__Computer_Programming
                 }
             }
         }
-
+        //this is where a PNG file can be saved
         private void chart1_Click(object sender, EventArgs e)
         {
 
